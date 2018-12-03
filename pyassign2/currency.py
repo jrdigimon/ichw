@@ -153,26 +153,17 @@ def main():
            Precondition: currency_to is a string for a valid currency code
            Parameter amount_from: amount of currency to convert
            Precondition: amount_from is a float'''
-        if iscurrency(currency_from) is True and iscurrency(currency_to) is True and amount_from.isdigit() is True:
-            text = currency_response(currency_from, currency_to, amount_from)
-            temp1 = get_to(text)
-            temp2 = temp1.split()
-            amount_to = float(temp2[0])
-            return amount_to
-        elif iscurrency(currency_from) is False:
-            amount_to = 'Source currency code is invalid.'
-            return amount_to
-        elif iscurrency(currency_to) is False:
-            amount_to = 'Exchange currency code is invalid.'
-            return amount_to
-        else:
-            amount_to = 'Currency amount is invalid.'
-            return amount_to
+        text = currency_response(currency_from, currency_to, amount_from)
+        temp1 = get_to(text)
+        temp2 = temp1.split()
+        amount_to = float(temp2[0])
+        return amount_to
     def test_exchange():
+        '''Test the exchnge function.'''
         assert(exchange('USD','EUR',2.5) == 2.1589225)
-        assert(exchange('usd','EUR',2.5) == 'Source currency code is invalid.')
-        assert(exchange('USD','eur',2.5) == 'Exchange currency code is invalid.')
-        assert(exchange('USD','EUR','joking') == 'Currency amount is invalid.')
+        assert(exchange('TOP','TTD',6) == 17.511635818151)
+        assert(exchange('XPD','ZWL',0.3) == 94963.915451466)
+    test_exchange()
     print('All tests passed.')
 if __name__ == "__main__":
     main()
