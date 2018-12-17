@@ -37,8 +37,8 @@ def main():
         scheme = scheme + [tile] 
         return scheme
 
-    def all_schemes(m,n,a,b,wall,scheme):
-        '''Return the results.'''
+    def all_schemes1(m,n,a,b,wall,scheme):
+        '''Return the results if a != b.'''
         if 0 not in wall:  #此时证明墙已填满，说明方案成功，把方案加入方案集合。
             global schemes       #此处声明schemes是全局变量。
             schemes = schemes + [scheme]  
@@ -56,11 +56,28 @@ def main():
                 if can_add(m,n,a,b,start,wall) == True:#横着填
                     wall1 = added_wall(m,n,a,b,start,wall1)
                     scheme1 = added_scheme(m,n,a,b,start,scheme1)
-                    all_schemes(m,n,a,b,wall1,scheme1)
+                    all_schemes1(m,n,a,b,wall1,scheme1)
                 if can_add(m,n,b,a,start,wall) == True:#竖着填
                     wall2 = added_wall(m,n,b,a,start,wall2)
                     scheme2 = added_scheme(m,n,b,a,start,scheme2)
-                    all_schemes(m,n,a,b,wall2,scheme2)
+                    all_schemes1(m,n,a,b,wall2,scheme2)
+
+    def all_schemes2(m,n,a,b,wall,scheme):
+        '''Return the results if a == b'''
+        if 0 not in wall:  #此时证明墙已填满，说明方案成功，把方案加入方案集合。
+            global schemes       #此处声明schemes是全局变量。
+            schemes = schemes + [scheme]  
+        else:#此处需要递归.
+            start = -1 #保证start是有意义的，防止使用前未定义。
+            for i in range(m * n): #找出第一个能填的位置.
+                if can_add(m,n,a,b,i,wall) == True or can_add(m,n,b,a,i,wall) == True:
+                    start = i
+                    break
+            if start != -1:#表示找到了能填的位置。
+                if can_add(m,n,a,b,start,wall) == True:
+                    wall = added_wall(m,n,a,b,start,wall)
+                    scheme = added_scheme(m,n,a,b,start,scheme)
+                    all_schemes2(m,n,a,b,wall,scheme)
             
     m = int(input('Please input the length of the wall.'))
     n = int(input('Please input the width of the wall.'))
@@ -69,7 +86,10 @@ def main():
     
     wall = [0] * m * n #记录初始状态
     scheme = []
-    all_schemes(m,n,a,b,wall,scheme) #此函数的功能是改变全局变量schemes的值。
+    if a != b:
+        all_schemes1(m,n,a,b,wall,scheme) #此函数将结果记录在全局变量schemes中。
+    else:
+        all_schemes2(m,n,a,b,wall,scheme) #此函数将结果记录在全局变量schemes中。
     for s in schemes:
         print(s)
 
@@ -78,7 +98,7 @@ def main():
     chosen = schemes[num]
     bob = turtle.Turtle()
     bob.up()
-    x0 = -m * 50 / 2 #设置原点坐标使得图形在正中央,令小正方形的边长为50.
+    x0 = -m * 50 / 2 #设置原点坐标使得图形在正中央，令小正方形边长为50.
     y0 = -n * 50 / 2
     bob.setx(x0)
     bob.sety(y0)
