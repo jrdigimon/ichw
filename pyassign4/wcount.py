@@ -8,24 +8,24 @@ def wcount(text, topn=10):
     in reverse order, output the topn (word count), each in one line. 
     """
     import string
-    text = text.lower()
+    text = text.lower()               #将含大写的单词全变成小写
     for mark in string.punctuation:
-        text = text.replace(mark, ' ')        
-    line = text.splitlines()
+        text = text.replace(mark, ' ')#将标点变成空格
+    line = text.splitlines()          #分行
     words = []
     for i in line:
-        words = words + i.split()
-    histogram = dict()
+        words = words + i.split()     #分成词
+    histogram = dict()                #直方图的雏形
     for word in words:
-        histogram[word] = histogram.get(word, 0) + 1
+        histogram[word] = histogram.get(word, 0) + 1 #构建直方图
     lst = list(histogram.items())
     lst2 = []
     lst3 = []
     for k,v in lst:
-        lst2 = lst2 + [(v,k)]
-    lst2 = sorted(lst2, reverse = True)
+        lst2 = lst2 + [(v,k)]        #将键值对翻转构建相反的元组
+    lst2 = sorted(lst2, reverse = True) #按频率由高到低排序
     for k,v in lst2:
-        lst3 = lst3 + [(v,k)]
+        lst3 = lst3 + [(v,k)]        #再次将键值对翻转
     for i in range(min(topn,len(lst3))):
         print(lst3[i][0],lst3[i][1])
     pass
