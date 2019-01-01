@@ -26,7 +26,7 @@ def wcount(text, topn=10):
     lst2 = sorted(lst2, reverse = True)
     for k,v in lst2:
         lst3 = lst3 + [(v,k)]
-    for i in range(topn):
+    for i in range(min(topn,len(lst3))):
         print(lst3[i][0],lst3[i][1])
     pass
 
